@@ -1,0 +1,5 @@
+*.*~
+.DS_store
+.env
+coverage/
+node_modules/

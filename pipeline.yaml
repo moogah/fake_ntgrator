@@ -1,0 +1,23 @@
+steps:
+
+  - label: 'run lint'
+    docker-command: 'npm run lint'
+    
+  - label: 'run unit test'
+    docker-command: 'npm run test-unit'
+
+  - label: 'run integration test'
+    docker-command: 'npm run test-integration'
+
+  - label: 'publish docs'
+    plugin: foo://mkdocs-plugin
+    directory: 'docs/mkdocs'
+
+  - label: 'build admin'
+    docker-command: 'build admin'
+
+  - label: 'build user'
+    docker-command: 'build user'
+    
+  - label: 'build api'
+    docker-command: 'build api'

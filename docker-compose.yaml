@@ -1,0 +1,71 @@
+version '3.7'
+
+services:
+  postgres:
+    image: postgres-96
+    ports:
+      - 5432:5432
+    environment:
+      DATABASE: integrator
+      USER: integrator
+      PASSWORD: awesomepassword
+
+  redis:
+    image: redis-5.4
+    ports:
+      - 6379:6379
+
+  nginx:
+    image: nginx:1.8
+    ports:
+      - 8080:80
+
+  admin:
+    build:
+      dockerfile: ./docker/Admin.dockerfile
+    volumes:
+      - ./adminEntry.js:/app/adminEntry.js
+      - ./server/adminServer.js:/app/adminServer.js
+      - ./app/admin:/app/admin
+    command:
+      - "migrate database"
+      - "seed database"
+      - "pm2 start admin"
+    depends_on:
+      - "redis"
+      - "nginx"
+      - "postgres"
+    environment:
+      ENV: "local"
+
+  user:
+    build:
+      dockerfile: ./docker/User.dockerfile
+    volumes:
+      - ./userEntry.js.js:/app/userEntry.js
+      - ./server/userServer.js:/app/userServer.js
+      - ./app/user:/app/user
+    command:
+      - "pm2 start user"
+    depends_on:
+      - "redis"
+      - "nginx"
+      - "postgres"
+    environment:
+      ENV: "local"
+
+  api:
+    build:
+      dockerfile: ./docker/API.dockerfile
+    volumes:
+      - ./apiEntry.js.js:/app/apiEntry.js
+      - ./server/apiServer.js:/app/apiServer.js
+      - ./app/api:/app/api
+    command:
+      - "pm2 start api"
+    depends_on:
+      - "redis"
+      - "nginx"
+      - "postgres"
+    environment:
+      ENV: "local"
