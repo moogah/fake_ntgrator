@@ -26,6 +26,7 @@ services:
     volumes:
       - ./adminEntry.js:/app/adminEntry.js
       - ./server/adminServer.js:/app/adminServer.js
+      - ./server/routes/admin:/app/routes/admin
       - ./app/admin:/app/admin
     command:
       - "migrate database"
@@ -44,6 +45,7 @@ services:
     volumes:
       - ./userEntry.js.js:/app/userEntry.js
       - ./server/userServer.js:/app/userServer.js
+      - ./server/routes/user:/app/routes/user
       - ./app/user:/app/user
     command:
       - "pm2 start user"
@@ -60,6 +62,7 @@ services:
     volumes:
       - ./apiEntry.js.js:/app/apiEntry.js
       - ./server/apiServer.js:/app/apiServer.js
+      - ./server/routes/api:/app/routes/api
       - ./app/api:/app/api
     command:
       - "pm2 start api"
